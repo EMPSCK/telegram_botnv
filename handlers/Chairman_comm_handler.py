@@ -11,6 +11,8 @@ from queries import get_compId_for_user_query
 from queries import get_isActive_competition_query
 from aiogram import types
 import load_judges_list
+import config
+import pymysql
 router = Router()
 
 class Load_list_judges(StatesGroup):
@@ -70,10 +72,24 @@ async def f3(message: Message):
         if chairman_id == 0:
             await message.answer('❌Ошибка\nНе установлен chairman_id')
         else:
-            try:
-                await message.bot.forward_message(chairman_id, message.chat.id, message.message_id)
-            except:
-                print(f'{chairman_id} - бот в бане')
-
-
-
+            #Проверяем активно ли соревновнание в котором записан Scrutineer
+            conn = pymysql.connect(
+                host=config.host,
+                port=3306,
+                user=config.user,
+                password=config.password,
+                database=config.db_name,
+                cursorclass=pymysql.cursors.DictCursor
+            )
+            with conn:
+                cur = conn.cursor()
+                cur.execute(f"SELECT isActive FROM competition WHERE scrutineerId = {message.from_user.id}")
+                active_or_not = cur.fetchone()
+                cur.close()
+            if active_or_not == 1:
+                try:
+                    await message.bot.forward_message(chairman_id, message.chat.id, message.message_id)
+                except:
+                    print(f'{chairman_id} - бот в бане')
+            else:
+                await message.answer('❌Ошибка\nСоревнование не активно')

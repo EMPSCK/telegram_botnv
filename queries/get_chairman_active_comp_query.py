@@ -14,7 +14,7 @@ def get_list_comp(tg_id):
         )
         with conn:
             cur = conn.cursor()
-            cur.execute(f"SELECT compName, compId FROM competition WHERE chairman_id = {tg_id}")
+            cur.execute(f"SELECT compName, compId FROM competition WHERE chairman_id = {tg_id} and isActive = 1")
             competitions = cur.fetchall()
             cur.close()
             return competitions
