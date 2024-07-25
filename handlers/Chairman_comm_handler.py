@@ -38,7 +38,9 @@ async def cmd_judes(message: Message, state:FSMContext):
 
 @router.message(Load_list_judges.next_step)
 async def f2(message: Message, state: FSMContext):
-    await load_judges_list.load_list(message.from_user.id, message.text)
+    compid = await get_compId_for_user_query.get_CompId(message.from_user.id)
+    await load_judges_list.load_list(message.from_user.id, message.text, compid)
+    await message.answer('Список загружен')
 
 
 @router.callback_query(F.data == 'cancel_load')
@@ -86,6 +88,7 @@ async def f3(message: Message):
                 cur.execute(f"SELECT isActive FROM competition WHERE scrutineerId = {message.from_user.id}")
                 active_or_not = cur.fetchone()
                 cur.close()
+            active_or_not = active_or_not['isActive']
             if active_or_not == 1:
                 try:
                     await message.bot.forward_message(chairman_id, message.chat.id, message.message_id)
