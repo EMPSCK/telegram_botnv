@@ -18,7 +18,7 @@ router = Router()
 class Load_list_judges(StatesGroup):
     next_step = State()
 
-#Загрузка списка судий
+#Загрузка списка судей
 @router.message(Command("judges"))
 async def cmd_judes(message: Message, state:FSMContext):
     user_status = await get_user_status_query.get_user_status(message.from_user.id)
@@ -49,7 +49,8 @@ async def f4(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text('Загрузка отменена')
 
 
-#Обмен сообщениями между chairman и scrutineer
+'''
+Обмен сообщениями между chairman и scrutineer
 @router.message()
 async def f3(message: Message):
     user_status = await get_user_status_query.get_user_status(message.from_user.id)
@@ -95,4 +96,5 @@ async def f3(message: Message):
                 except:
                     print(f'{chairman_id} - бот в бане')
             else:
-                await message.answer('❌Ошибка\nСоревнование не активно')
+                await message.answer('❌Ошибка\nСоревнование не активно') 
+'''

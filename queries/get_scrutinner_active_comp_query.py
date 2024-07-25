@@ -2,7 +2,7 @@ import pymysql
 import config
 
 
-async def set_active_comp_for_chairman(tg_id, id):
+def get_list_comp(tg_id):
     try:
         conn = pymysql.connect(
             host=config.host,
@@ -14,10 +14,10 @@ async def set_active_comp_for_chairman(tg_id, id):
         )
         with conn:
             cur = conn.cursor()
-            cur.execute(f"UPDATE users SET id_active_comp = {id} WHERE tg_id = {tg_id}")
-            conn.commit()
+            cur.execute(f"SELECT compName, compId FROM competition WHERE scrutineerId = {tg_id} and isActive = 1")
+            competitions = cur.fetchall()
             cur.close()
-            return 1
+            return competitions
     except:
-        print('Ошибка выполнения запроса на установку соревнований')
+        print('Ошибка выполнения запроса на поиск соревнований для chairman1')
         return 0

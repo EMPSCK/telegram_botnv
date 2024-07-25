@@ -3,6 +3,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from queries import get_user_status_query
 from keyboards import chairman_start_kb
+from keyboards import scrutineer_start_kb
 router = Router()
 
 
@@ -15,7 +16,7 @@ async def cmd_start(message: Message):
 
     #scrutinner
     if user_status == 2:
-        await message.answer('👋Добро пожаловать в scrutineer интерфейс бота SS6')
+        await message.answer('👋Добро пожаловать в scrutineer интерфейс бота SS6', reply_markup=scrutineer_start_kb.menu_kb)
 
     #chairman
     if user_status == 3:
