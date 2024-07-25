@@ -6,4 +6,9 @@ load_judges_kb = InlineKeyboardMarkup(inline_keyboard=[cancel_button])
 
 menu_button_1 = [InlineKeyboardButton(text='Создать турнир', callback_data='create_competition')]
 menu_button_2 = [InlineKeyboardButton(text='Редактировать турнир', callback_data='edit_competition')]
-menu_kb = InlineKeyboardMarkup(inline_keyboard=[menu_button_1, menu_button_2])
+menu_button_3 = [InlineKeyboardButton(text='Вывести список турниров', callback_data='show_tournament_list')]
+menu_kb = InlineKeyboardMarkup(inline_keyboard=[menu_button_1, menu_button_3, menu_button_2])
+
+
+create_comp_button_2 = [InlineKeyboardButton(text='Вернуться к меню', callback_data='cancel_create_comp')]
+create_comp_kb = InlineKeyboardMarkup(inline_keyboard=[create_comp_button_2])

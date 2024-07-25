@@ -5,8 +5,6 @@ from queries import get_user_status_query
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from keyboards import chairmans_kb
-#from queries import get_compId_for_user_query
-#from queries import get_isActive_competition_query
 from queries import chairman_queries
 from queries import scrutineer_queries
 from queries import general_queries
@@ -51,6 +49,7 @@ async def f4(callback: types.CallbackQuery, state: FSMContext):
 
 
 
+'''
 
 @router.message()
 async def f3(message: Message):
@@ -98,3 +97,5 @@ async def f3(message: Message):
                     print(f'{chairman_id} - бот в бане')
             else:
                 await message.answer('❌Ошибка\nСоревнование не активно') 
+                
+'''

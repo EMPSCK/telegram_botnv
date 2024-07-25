@@ -24,9 +24,6 @@ async def set_active_comp_for_chairman(tg_id, id):
         return 0
 
 
-
-from queries import get_compId_for_user_query
-
 async def get_Scrutineer(tg_id):
     try:
         conn = pymysql.connect(
