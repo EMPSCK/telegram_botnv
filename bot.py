@@ -14,7 +14,7 @@ async def main():
     dp.include_router(Chairman_menu_handler.router)
     dp.include_router(Scrutineer_menu_handler.router)
     dp.include_router(Chairman_comm_handler.router)
-    dp.include_router(Admin_menu_handler)
+    dp.include_router(Admin_menu_handler.router)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
