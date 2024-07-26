@@ -3,6 +3,7 @@ from aiogram import types
 from keyboards import scrutineer_kb
 from queries import get_user_status_query
 from queries import chairman_queries
+from queries import general_queries
 router = Router()
 
 
@@ -11,7 +12,9 @@ router = Router()
 async def cmd_start(call: types.CallbackQuery):
     user_status = await get_user_status_query.get_user_status(call.from_user.id)
     if user_status == 2:
-        text = '👋Добро пожаловать в chairman интерфейс бота SS6\n\n /judges - отправить список судий'
+        active_comp = await general_queries.get_CompId(call.from_user.id)
+        comp_name = await general_queries.CompId_to_name(active_comp)
+        text = f'👋Добро пожаловать в chairman интерфейс бота SS6\n\n /judges - отправить список судий\nАктивное соревнование: {comp_name}'
         await call.message.edit_text(text=text, reply_markup=scrutineer_kb.menu_kb)
 
 

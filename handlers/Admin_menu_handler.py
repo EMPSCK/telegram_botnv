@@ -16,7 +16,7 @@ class Create_comp(StatesGroup):
 async def cmd_start(call: types.CallbackQuery, state:FSMContext):
     user_status = await get_user_status_query.get_user_status(call.from_user.id)
     if user_status == 1:
-        text = 'В следующем сообщении отправьте значения столбцов:\n\n1)compGuid\n2)date1\n3)date2\n4)compName\n5)city\n6)chairman_Id\n7)scrutineerId\n8)lin_const\n9)isActive\n10)isSecret'
+        text = 'В следующем сообщении отправьте значения столбцов:\n\ncompGuid: \ndate1: \ndate2: \ncompName: \ncity: \nchairman_Id: \nscrutineerId: \nlin_const: \nisActive: \nisSecret: '
         await call.message.edit_text(text=text, reply_markup=admins_kb.create_comp_kb)
         await state.set_state(Create_comp.next_create_comp_state)
 
@@ -40,11 +40,14 @@ async def f4(callback: types.CallbackQuery, state: FSMContext):
 
 #Вывести список турниров
 @router.callback_query(F.data == 'show_tournament_list')
-async def cmd_start(call: types.CallbackQuery, state:FSMContext):
+async def cmd_start(call: types.CallbackQuery):
     user_status = await get_user_status_query.get_user_status(call.from_user.id)
     if user_status == 1:
         text = await admins_queries.get_tournament_list()
-        await call.message.answer(text=text)
+        await call.message.edit_text(text)
+        await call.message.answer('👋Добро пожаловать в admin интерфейс бота SS6', reply_markup=admins_kb.menu_kb)
+
+
 
 #Редактировать турнир
 class Edit_comp(StatesGroup):
@@ -65,10 +68,10 @@ async def cmd_start(call: types.CallbackQuery, state:FSMContext):
 async def f2(message: Message, state: FSMContext):
     id = message.text
     comp_data = await admins_queries.get_tournament(id)
-    if comp_data is None or  comp_data == 0:
+    if comp_data is None or comp_data == 0:
         await message.answer('Запись не найдена', reply_markup=admins_kb.create_comp_kb)
     else:
-        text = 'В следующем сообщении отправьте значения столбцов:\n\n1)compGuid\n2)date1\n3)date2\n4)compName\n5)city\n6)chairman_Id\n7)scrutineerId\n8)lin_const\n9)isActive\n10)isSecret'
+        text = 'В следующем сообщении отправьте новые значения столбцов:\ncompGuid: \ndate1: \ndate2: \ncompName: \ncity: \nchairman_Id: \nscrutineerId: \nlin_const: \nisActive: \nisSecret: '
         await message.answer(str(comp_data)+'\n\n' + text, reply_markup=admins_kb.create_comp_kb)
         await state.set_state(Edit_comp.next_edit_comp_state_2)
 
@@ -78,7 +81,7 @@ async def f2(message: Message, state: FSMContext):
     text = message.text
     edit_comp_status = await admins_queries.edit_tournament(message.from_user.id, message.text)
     if edit_comp_status == 1:
-        await message.answer('Запись создана', reply_markup=admins_kb.create_comp_kb)
+        await message.answer('Запись обновлена', reply_markup=admins_kb.create_comp_kb)
         await state.clear()
     else:
         await message.answer('🤔Ошибка, попробуйте еще раз', reply_markup=admins_kb.create_comp_kb)

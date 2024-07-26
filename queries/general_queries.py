@@ -41,3 +41,23 @@ async def get_CompId(tg_id):
     except:
         print('Ошибка выполнения запроса поиск активного соревнования')
         return 0
+
+async def CompId_to_name(id):
+    try:
+        conn = pymysql.connect(
+            host=config.host,
+            port=3306,
+            user=config.user,
+            password=config.password,
+            database=config.db_name,
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        with conn:
+            cur = conn.cursor()
+            cur.execute(f"SELECT compName FROM competition WHERE compId = {id}")
+            name = cur.fetchone()
+            cur.close()
+            return name['compName']
+    except:
+        print('Ошибка выполнения запроса поиск активного соревнования')
+        return 'не установлено'
